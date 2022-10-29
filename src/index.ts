@@ -10,7 +10,7 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Bloggers Tube 2.0')
 })
 
-app.use("/testing", testingRouter)
+app.use("/api/testing", testingRouter)
 
 app.use("/api/videos", videosRouter)
 
