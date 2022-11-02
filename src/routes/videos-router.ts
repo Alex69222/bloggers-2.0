@@ -88,8 +88,8 @@ videosRouter.post("/", (req: Request, res: Response) => {
         author,
         canBeDownloaded,
         minAgeRestriction,
-        createdAt: now.toString(),
-        publicationDate: new Date(now.setDate(now.getDate() + 1)).toString(),
+        createdAt: now.toISOString(),
+        publicationDate: new Date(now.setDate(now.getDate() + 1)).toISOString(),
         availableResolutions
     }
     videos.push(newVideo)
