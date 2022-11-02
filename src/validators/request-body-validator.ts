@@ -30,7 +30,16 @@ export const validateRequestBody = (body: { [key: string]: any }, ...fields: Arr
 
     for (let field of fields) {
         if (field === BodyFieldsEnum.title) {
-            if (!body[BodyFieldsEnum.title].trim()) {
+            try{
+                if (!body[BodyFieldsEnum.title].trim()) {
+                    errorsObj.errorsMessages.push(
+                        {
+                            field: BodyFieldsEnum.title,
+                            message: "title should be provided"
+                        }
+                    )
+                }
+            }catch (e) {
                 errorsObj.errorsMessages.push(
                     {
                         field: BodyFieldsEnum.title,
@@ -38,6 +47,7 @@ export const validateRequestBody = (body: { [key: string]: any }, ...fields: Arr
                     }
                 )
             }
+
         } else if (field === BodyFieldsEnum.author) {
             if (!body[BodyFieldsEnum.author] || !body[BodyFieldsEnum.author].trim()) {
                 errorsObj.errorsMessages.push(
