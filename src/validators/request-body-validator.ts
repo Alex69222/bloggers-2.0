@@ -30,35 +30,63 @@ export const validateRequestBody = (body: { [key: string]: any }, ...fields: Arr
 
     for (let field of fields) {
         if (field === BodyFieldsEnum.title) {
-            try{
-                if (!body[BodyFieldsEnum.title].trim()) {
-                    errorsObj.errorsMessages.push(
-                        {
-                            field: BodyFieldsEnum.title,
-                            message: "title should be provided"
-                        }
-                    )
-                }
-            }catch (e) {
+
+            if (typeof body[BodyFieldsEnum.title] !== 'string') {
+                errorsObj.errorsMessages.push(
+                    {
+                        field: BodyFieldsEnum.title,
+                        message: "title should be provided as a string"
+                    }
+                )
+            } else if (!body[BodyFieldsEnum.title].trim()) {
                 errorsObj.errorsMessages.push(
                     {
                         field: BodyFieldsEnum.title,
                         message: "title should be provided"
                     }
                 )
+            } else if (body[BodyFieldsEnum.title].length > 40) {
+                errorsObj.errorsMessages.push(
+                    {
+                        field: BodyFieldsEnum.title,
+                        message: "title length should be maximum 40 symbols"
+                    }
+                )
             }
 
+
         } else if (field === BodyFieldsEnum.author) {
-            if (!body[BodyFieldsEnum.author] || !body[BodyFieldsEnum.author].trim()) {
+            if(typeof body[BodyFieldsEnum.author] !== "string"){
+                errorsObj.errorsMessages.push(
+                    {
+                        field: BodyFieldsEnum.author,
+                        message: "author should be provided as a string"
+                    }
+                )
+            } else if (!body[BodyFieldsEnum.author].trim()) {
                 errorsObj.errorsMessages.push(
                     {
                         field: BodyFieldsEnum.author,
                         message: "author should be provided"
                     }
                 )
+            }else if(body[BodyFieldsEnum.author].length > 20){
+                errorsObj.errorsMessages.push(
+                    {
+                        field: BodyFieldsEnum.author,
+                        message: "author length can be 20 symbols max"
+                    }
+                )
             }
         } else if (field === BodyFieldsEnum.minAgeRestriction) {
-            if (body[BodyFieldsEnum.minAgeRestriction] && ((+body[BodyFieldsEnum.minAgeRestriction] < 1 && +body[BodyFieldsEnum.minAgeRestriction] > 18) || isNaN(+body[BodyFieldsEnum.minAgeRestriction]))) {
+            if(typeof (+body[BodyFieldsEnum.minAgeRestriction]) !== 'number' &&  body[BodyFieldsEnum.minAgeRestriction] !== null &&  body[BodyFieldsEnum.minAgeRestriction] !== undefined){
+                errorsObj.errorsMessages.push(
+                    {
+                        field: BodyFieldsEnum.minAgeRestriction,
+                        message: "minAgeRestriction should be a number or null"
+                    }
+                )
+            }else if( typeof +body[BodyFieldsEnum.minAgeRestriction] === 'number' && (+body[BodyFieldsEnum.minAgeRestriction] < 1 || +body[BodyFieldsEnum.minAgeRestriction] > 18)){
                 errorsObj.errorsMessages.push(
                     {
                         field: BodyFieldsEnum.minAgeRestriction,
@@ -66,6 +94,7 @@ export const validateRequestBody = (body: { [key: string]: any }, ...fields: Arr
                     }
                 )
             }
+
         } else if (field === BodyFieldsEnum.availableResolutions) {
             if (!Array.isArray(body[BodyFieldsEnum.availableResolutions]) || body[BodyFieldsEnum.availableResolutions].length === 0) {
                 errorsObj.errorsMessages.push(
@@ -88,8 +117,8 @@ export const validateRequestBody = (body: { [key: string]: any }, ...fields: Arr
                     }
                 }
             }
-        }else if(field === BodyFieldsEnum.canBeDownloaded){
-            if(body[BodyFieldsEnum.canBeDownloaded] && (typeof body[BodyFieldsEnum.canBeDownloaded] !== "boolean" )){
+        } else if (field === BodyFieldsEnum.canBeDownloaded) {
+            if (body[BodyFieldsEnum.canBeDownloaded] && (typeof body[BodyFieldsEnum.canBeDownloaded] !== "boolean")) {
                 errorsObj.errorsMessages.push(
                     {
                         field: BodyFieldsEnum.canBeDownloaded,
