@@ -15,13 +15,14 @@ export enum BodyFieldsEnum {
     author = "author",
     minAgeRestriction = "minAgeRestriction",
     availableResolutions = "availableResolutions",
-    canBeDownloaded = "canBeDownloaded"
+    canBeDownloaded = "canBeDownloaded",
+    publicationDate = "publicationDate"
 }
 
 export type ErrorsObjectType = {
     errorsMessages: { message: string, field: string }[]
 }
-
+let dateRegex = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/
 export const validateRequestBody = (body: { [key: string]: any }, ...fields: Array<string>): ErrorsObjectType => {
 
     const errorsObj: ErrorsObjectType = {
@@ -123,6 +124,17 @@ export const validateRequestBody = (body: { [key: string]: any }, ...fields: Arr
                     {
                         field: BodyFieldsEnum.canBeDownloaded,
                         message: "You should provide only boolean value for canBeDownloaded field"
+                    }
+                )
+            }
+        } else if(field === BodyFieldsEnum.publicationDate){
+            if(body[BodyFieldsEnum.publicationDate] &&
+                (typeof body[BodyFieldsEnum.publicationDate] !== "string" || !dateRegex.test(body[BodyFieldsEnum.publicationDate]))
+                ){
+                errorsObj.errorsMessages.push(
+                    {
+                        field: BodyFieldsEnum.publicationDate,
+                        message: "Publication date should be a date-string"
                     }
                 )
             }

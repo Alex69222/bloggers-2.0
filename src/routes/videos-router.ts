@@ -102,7 +102,7 @@ videosRouter.put("/:id", (req: Request, res: Response) => {
     let video = videos.find(v => v.id === +req.params.id)
     if (!video) return res.send(404)
 
-    const errorsObj = validateRequestBody(req.body, BodyFieldsEnum.title, BodyFieldsEnum.author, BodyFieldsEnum.minAgeRestriction, BodyFieldsEnum.availableResolutions, BodyFieldsEnum.canBeDownloaded)
+    const errorsObj = validateRequestBody(req.body, BodyFieldsEnum.title, BodyFieldsEnum.author, BodyFieldsEnum.minAgeRestriction, BodyFieldsEnum.availableResolutions, BodyFieldsEnum.canBeDownloaded, BodyFieldsEnum.publicationDate)
     if (errorsObj.errorsMessages.length) return res.status(400).send(errorsObj)
     const title: string = req.body.title
     const author: string = req.body.author
